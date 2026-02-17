@@ -1,4 +1,4 @@
-name: Deploy Static HTML Website to EC2 (Apache)
+name: Deploy Static Website to EC2 Apache
 
 on:
   push:
@@ -10,23 +10,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy to EC2 using SSH
+      - name: Deploy to EC2 via SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
-          key: ${{ secrets.EC2_SSH_KEY }}
-
+          key: ${{ secrets.EC2_KEY }}
           script: |
-            echo "🚀 Starting Deployment..."
-
-            # Go to Apache web directory
-            cd /var/www/html
-
-            # Pull latest code
+            cd /var/www/html/static_website
             git pull origin main
-
-            # Restart Apache
             sudo systemctl restart apache2
 
-            echo "✅ Website Successfully Deployed!"
